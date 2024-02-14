@@ -9,5 +9,59 @@ body {
 }
 
 .test {
-  background-color: red;
+  background-color: #ffff00;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#h75 {
+  height: 75px;
+}
+
+.parent {
+  height: 250px;
+  display: flex;
+  border-radius: 5px;
+  padding: 1.5vw;
+}
+
+.child img {
+  width: 100%;
+  height: 35%;
+  object-fit: cover;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.child {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 5px;
+  margin: 0 1.5vw;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.childBody {
+  padding: 15px 1.5vw;
+}
+
+.childBody button {
+  height: 50px;
+  width: 50px;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+.childBody i {
+  font-size: 1.1rem;
+}
+
+.bottom {
+  margin-top: auto;
 }
