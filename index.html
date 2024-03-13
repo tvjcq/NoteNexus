@@ -24,66 +24,54 @@
   </head>
   <body>
     <header>
-      <section>
-        <div class="d-flex bd-highlight mb-2">
-          <div>
-            <img
-              class="rounded-circle"
-              src="https://via.placeholder.com/75"
-              alt="photo de profil"
-            />
-          </div>
-          <div class="mx-2 test d-flex align-items-center" id="h75">
-            <h1 class="p-2">Bienvenue Bobby</h1>
-          </div>
-        </div>
-        <div class="p-2 test">
-          <h3 class="text-center">Vos artistes préférés</h3>
-          <div class="parent">
-            <div class="child bottom">
-              <img
-                src="https://via.placeholder.com/150"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="childBody">
-                <h5>2ème</h5>
-                <button><i class="bi bi-play-fill"></i></button>
-              </div>
-            </div>
-            <div class="child">
-              <img
-                src="https://via.placeholder.com/150"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="childBody">
-                <h5>1er</h5>
-                <button><i class="bi bi-play-fill"></i></button>
-              </div>
-            </div>
-            <div class="child bottom" id="dernier">
-              <img
-                src="https://via.placeholder.com/150"
-                class="card-img-top"
-                alt="..."
-              />
-              <div class="childBody">
-                <h5>3ème</h5>
-                <button><i class="bi bi-play-fill"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="graphique">
-        <div class="texte">
-          <p>Revoyons votre année ensemble !</p>
-        </div>
-        <div class="graph">Graphique</div>
-      </section>
+      <div>
+        <img src="https://via.placeholder.com/100" alt="Profile Picture" />
+        <h1>Bienvenue Bobby</h1>
+      </div>
+      <div>
+        <p>Découvrez vous musicalement</p>
+        <i class="bi bi-arrow-down"></i>
+      </div>
     </header>
-    <main></main>
-    <footer></footer>
+    <div class="container">
+      <div class="row" id="cardGrid"></div>
+    </div>
+
+    <script>
+      fetch("data.json")
+        .then((response) => response.json())
+        .then((jsonData) => {
+          // Generate cards from JSON data
+          var cardGrid = document.getElementById("cardGrid");
+          var i = 0;
+          jsonData.forEach(function (cardData) {
+            i++;
+            var card = document.createElement("div");
+            card.classList.add("col-md-4", "col-sm-6", "my-3");
+
+            var cardHtml = `
+              <div class="card">
+                <img src="${
+                  cardData.album.images[1].url
+                }" class="card-img-top" alt="Card Image">
+                <div class="card-body">
+                  <h4 class="card-title"><b>${i}.</b> ${cardData.name}</h4>
+                  <p class="card-text mb-0">
+                    ${cardData.artists.map((artist) => artist.name).join(", ")}
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted">${cardData.album.name}</small>
+                </div>
+              </div>
+            `;
+
+            card.innerHTML = cardHtml;
+            cardGrid.appendChild(card);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching JSON data:", error);
+        });
+    </script>
   </body>
 </html>
