@@ -37,15 +37,76 @@
       <div class="row" id="cardGrid"></div>
     </div>
 
+    <div
+      class="modal fade"
+      id="noPreviewModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="noPreviewModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="noPreviewModalLabel">
+              Housten, nous avons un problème
+            </h5>
+          </div>
+          <div class="modal-body">
+            Désolé, mais il n'y a pas de preview pour ce son.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              onclick="closeModal()"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script>
+      var currentAudio = null;
+      function playAudio(url) {
+        if (url == "null") {
+          var modal = document.getElementById("noPreviewModal");
+          modal.classList.add("show");
+          modal.style.display = "block";
+          return;
+        }
+        console.log(url);
+        console.log(currentAudio);
+        if (currentAudio) {
+          currentAudio.pause();
+          currentAudio.currentTime = 0;
+          if (playurl == url) {
+            playurl = null;
+            return;
+          }
+        }
+        playurl = url;
+        currentAudio = new Audio(url);
+        currentAudio.play();
+      }
+
+      function closeModal() {
+        var modal = document.getElementById("noPreviewModal");
+        modal.classList.remove("show");
+        modal.style.display = "none";
+      }
+
       fetch("data.json")
         .then((response) => response.json())
         .then((jsonData) => {
-          // Generate cards from JSON data
           var cardGrid = document.getElementById("cardGrid");
           var i = 0;
           jsonData.forEach(function (cardData) {
             i++;
+
             var card = document.createElement("div");
             card.classList.add("col-md-4", "col-sm-6", "my-3");
 
@@ -61,6 +122,12 @@
                   </p>
                   <p class="card-text">
                     <small class="text-muted">${cardData.album.name}</small>
+                  </p>
+                  <button id="playButton" class="btn btn-primary" onclick="playAudio('${
+                    cardData.preview_url
+                  }')">
+                  Écouter
+                  </button>
                 </div>
               </div>
             `;
