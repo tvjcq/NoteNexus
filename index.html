@@ -71,7 +71,7 @@
 
     <script>
       var currentAudio = null;
-      function playAudio(url) {
+      function playAudio(url, i) {
         if (url == "null") {
           var modal = document.getElementById("noPreviewModal");
           modal.classList.add("show");
@@ -82,11 +82,28 @@
           currentAudio.pause();
           currentAudio.currentTime = 0;
           if (playurl == url) {
+            document
+              .getElementById(`play-icon-${i}`)
+              .classList.remove("bi-pause-fill");
+            document
+              .getElementById(`play-icon-${i}`)
+              .classList.add("bi-play-fill");
             playurl = null;
             return;
           }
         }
+        const previousIcon = document.querySelector(".bi-pause-fill");
+        if (previousIcon) {
+          previousIcon.classList.remove("bi-pause-fill");
+          previousIcon.classList.add("bi-play-fill");
+        }
         playurl = url;
+        document
+          .getElementById(`play-icon-${i}`)
+          .classList.remove("bi-play-fill");
+        document
+          .getElementById(`play-icon-${i}`)
+          .classList.add("bi-pause-fill");
         currentAudio = new Audio(url);
         currentAudio.play();
       }
@@ -110,9 +127,16 @@
 
             var cardHtml = `
               <div class="card">
-                <img src="${
-                  cardData.album.images[1].url
-                }" class="card-img-top" alt="Card Image">
+                <div class="imgPlayer">
+                  <img src="${
+                    cardData.album.images[1].url
+                  }" class="card-img-top" alt="Card Image">
+                  <div class="playButton" >
+                    <i id="play-icon-${i}"  class="bi bi-play-fill" onclick="playAudio('${
+              cardData.preview_url
+            }', ${i} )"></i>
+                  </div>
+                </div>
                 <div class="card-body">
                   <h4 class="card-title"><b>${i}.</b> ${cardData.name}</h4>
                   <p class="card-text mb-0">
