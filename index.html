@@ -45,7 +45,7 @@
       aria-labelledby="noPreviewModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="noPreviewModalLabel">
@@ -114,6 +114,12 @@
         modal.style.display = "none";
       }
 
+      function msToMinSec(ms) {
+        let minutes = Math.floor(ms / 60000);
+        let seconds = ((ms % 60000) / 1000).toFixed(0);
+        return minutes + "min " + (seconds < 10 ? "0" : "") + seconds + "s";
+      }
+
       fetch("data.json")
         .then((response) => response.json())
         .then((jsonData) => {
@@ -121,38 +127,74 @@
           var i = 0;
           jsonData.forEach(function (cardData) {
             i++;
-
+            const durationInMs = `${cardData.duration_ms}`;
+            const durationInMinSec = msToMinSec(durationInMs);
             var card = document.createElement("div");
             card.classList.add("col-md-4", "col-sm-6", "my-3");
 
             var cardHtml = `
-              <div class="card">
-                <div class="imgPlayer">
-                  <img src="${
-                    cardData.album.images[1].url
-                  }" class="card-img-top" alt="Card Image">
-                  <div class="playButton" >
-                    <i id="play-icon-${i}"  class="bi bi-play-fill" onclick="playAudio('${
+                <div class="card">
+                  <div class="imgPlayer">
+                    <img src="${
+                      cardData.album.images[1].url
+                    }" class="card-img-top" alt="Card Image">
+                    <div class="playButton" >
+                      <i id="play-icon-${i}"  class="bi bi-play-fill" onclick="playAudio('${
               cardData.preview_url
             }', ${i} )"></i>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h4 class="card-title"><b>${i}.</b> ${cardData.name}</h4>
+                    <p class="card-text mb-0">
+                      ${cardData.artists
+                        .map((artist) => artist.name)
+                        .join(", ")}
+                    </p>
+                    <p class="card-text">
+                      <small class="text-muted">${cardData.album.name}</small>
+                    </p>
+                    <button id="moreInfo-${i}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-${i}"">
+                      Plus d'infos
+                    </button>
                   </div>
                 </div>
-                <div class="card-body">
-                  <h4 class="card-title"><b>${i}.</b> ${cardData.name}</h4>
-                  <p class="card-text mb-0">
-                    ${cardData.artists.map((artist) => artist.name).join(", ")}
-                  </p>
-                  <p class="card-text">
-                    <small class="text-muted">${cardData.album.name}</small>
-                  </p>
-                  <button id="playButton" class="btn btn-primary" onclick="playAudio('${
-                    cardData.preview_url
-                  }')">
-                  Écouter
-                  </button>
-                </div>
-              </div>
-            `;
+
+                <div class="modal fade" id="modal-${i}" tabindex="-1" aria-labelledby="modalLabel-${i}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalLabel-${i}">${
+              cardData.name
+            }</h5> </br>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p>Album: ${cardData.album.name}</p>
+              <p>Date de sortie: ${new Date(
+                cardData.album.release_date
+              ).toLocaleDateString("fr-FR", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}</p>
+              <p>Artiste(s): ${cardData.artists
+                .map((artist) => artist.name)
+                .join(", ")}</p>
+
+              <p>Duration: ${durationInMinSec}</p>
+              <p>Popularity: ${cardData.popularity}</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" onclick="window.open('${
+                cardData.external_urls.spotify
+              }')">Écouter sur Spotify</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+              `;
 
             card.innerHTML = cardHtml;
             cardGrid.appendChild(card);
