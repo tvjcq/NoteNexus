@@ -139,7 +139,7 @@
                 <div class="card">
                   <div class="imgPlayer">
                     <img src="${
-                      cardData.album.images[1].url
+                      cardData.album.images[0].url
                     }" class="card-img-top" alt="Card Image">
                     <div class="playButton" >
                       <i id="play-icon-${i}"  class="bi bi-play-fill"></i>
@@ -171,20 +171,27 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <p>Album: ${cardData.album.name}</p>
-              <p>Date de sortie: ${new Date(
+              <img src="${
+                cardData.album.images[0].url
+              }" class="card-img-top rounded" alt="Card Image">
+              <p>Titre : ${cardData.name}</p>
+              <p>Album : ${cardData.album.name}</p>
+              <p>Date de sortie : ${new Date(
                 cardData.album.release_date
               ).toLocaleDateString("fr-FR", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
               })}</p>
-              <p>Artiste(s): ${cardData.artists
+              <p>Durée : ${durationInMinSec}</p>
+              <p>Artiste(s) : ${cardData.artists
                 .map((artist) => artist.name)
                 .join(", ")}</p>
+              <p>Followers : ${cardData.artists[0].followers.total.toLocaleString(
+                undefined,
+                { useGrouping: true }
+              )}</p>
 
-              <p>Duration: ${durationInMinSec}</p>
-              <p>Popularity: ${cardData.popularity}</p>
             </div>
             <div class="modal-footer">
               <button type="button" id="spotifyBtn-${i}" class="btn btn-primary">Écouter sur Spotify</button>
