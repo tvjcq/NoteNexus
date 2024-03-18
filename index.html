@@ -59,8 +59,8 @@
             <button
               type="button"
               class="btn btn-secondary"
+              id="closeModalBtn"
               data-dismiss="modal"
-              onclick="closeModal()"
             >
               Fermer
             </button>
@@ -71,8 +71,9 @@
 
     <script>
       var currentAudio = null;
+
       function playAudio(url, i) {
-        if (url == "null") {
+        if (url == null) {
           var modal = document.getElementById("noPreviewModal");
           modal.classList.add("show");
           modal.style.display = "block";
@@ -98,12 +99,14 @@
           previousIcon.classList.add("bi-play-fill");
         }
         playurl = url;
+
         document
           .getElementById(`play-icon-${i}`)
           .classList.remove("bi-play-fill");
         document
           .getElementById(`play-icon-${i}`)
           .classList.add("bi-pause-fill");
+
         currentAudio = new Audio(url);
         currentAudio.play();
       }
@@ -125,7 +128,7 @@
         .then((jsonData) => {
           var cardGrid = document.getElementById("cardGrid");
           var i = 0;
-          jsonData.forEach(function (cardData) {
+          jsonData.forEach(function (cardData, i) {
             i++;
             const durationInMs = `${cardData.duration_ms}`;
             const durationInMinSec = msToMinSec(durationInMs);
@@ -139,9 +142,7 @@
                       cardData.album.images[1].url
                     }" class="card-img-top" alt="Card Image">
                     <div class="playButton" >
-                      <i id="play-icon-${i}"  class="bi bi-play-fill" onclick="playAudio('${
-              cardData.preview_url
-            }', ${i} )"></i>
+                      <i id="play-icon-${i}"  class="bi bi-play-fill"></i>
                     </div>
                   </div>
                   <div class="card-body">
@@ -186,9 +187,7 @@
               <p>Popularity: ${cardData.popularity}</p>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" onclick="window.open('${
-                cardData.external_urls.spotify
-              }')">Écouter sur Spotify</button>
+              <button type="button" id="spotifyBtn-${i}" class="btn btn-primary">Écouter sur Spotify</button>
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
             </div>
           </div>
@@ -198,6 +197,24 @@
 
             card.innerHTML = cardHtml;
             cardGrid.appendChild(card);
+
+            document
+              .getElementById(`play-icon-${i}`)
+              .addEventListener("click", function () {
+                playAudio(cardData.preview_url, i);
+              });
+
+            document
+              .getElementById(`spotifyBtn-${i}`)
+              .addEventListener("click", function () {
+                window.open(cardData.external_urls.spotify);
+              });
+
+            document
+              .getElementById(`closeModalBtn`)
+              .addEventListener("click", function () {
+                closeModal();
+              });
           });
         })
         .catch((error) => {
