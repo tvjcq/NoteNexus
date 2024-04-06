@@ -23,24 +23,53 @@
     <title>Note Nexus</title>
   </head>
   <body>
-    <header>
-      <div>
-        <img src="https://via.placeholder.com/100" alt="Profile Picture" />
-        <h1>Bienvenue Bobby</h1>
+    <header class="d-flex align-items-center flex-column gap-5 mt-5 mb-5">
+      <div class="d-flex gap-5">
+        <img src="assets/profilePicture.jpg" alt="Profile Picture" />
+        <h1 class="align-self-center">Bienvenue Bobby</h1>
       </div>
-      <div>
-        <p>Découvrez vous musicalement</p>
-        <i class="bi bi-arrow-down"></i>
+      <div class="d-flex flex-column">
+        <p class="fs-1">Découvrez vous musicalement</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="50"
+          height="50"
+          fill="currentColor"
+          class="bi bi-arrow-down align-self-center"
+          viewBox="0 0 16 16"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"
+          />
+        </svg>
       </div>
     </header>
+
+    <h2 class="text-center m-3">Vos 30 sons préférés !</h2>
     <div class="container">
       <div class="row" id="cardGrid"></div>
     </div>
 
-    <div class="chart">
-      <h2>Top 10 des artistes</h2>
-      <div class="chart-container">
-        <canvas id="myChart"></canvas>
+    <div class="container">
+      <div class="row bg-body-tertiary border rounded my-3 m-1">
+        <h2 class="mt-3 text-center">Quelques graphiques</h2>
+        <div class="col-lg-6 mx-0 my-auto">
+          <div class="chart bg-body m-5 p-4 rounded border">
+            <h3 class="text-center mb-5">Nombres de sons par artiste</h3>
+            <div class="chart-container">
+              <canvas id="myChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="chart bg-body m-5 p-4 rounded border">
+            <h3 class="text-center mb-5">Popularité de chaque sons</h3>
+            <div class="chart-container d-flex">
+              <canvas class="align-self-center" id="popularityChart"></canvas>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

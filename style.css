@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+header img {
+  height: 150px;
+  width: 150px;
+  border-radius: 100%;
+}
+
+body {
+  background-color: #fbf9f1;
+}
+
 .imgPlayer {
   position: relative;
   display: flex;
@@ -55,4 +65,16 @@
 
 .modal-body img {
   margin: 0 0 16px 0;
+}
+
+#card1 {
+  background-color: #ffc94a;
+}
+
+#card2 {
+  background-color: #b4b4b4;
+}
+
+#card3 {
+  background-color: #c08b5c;
 }

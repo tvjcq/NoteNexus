@@ -60,7 +60,7 @@ fetch("data.json")
       card.classList.add("col-md-4", "col-sm-6", "my-3");
 
       var cardHtml = `
-                <div class="card">
+                <div class="card" id="card${i}" >
                   <div class="imgPlayer">
                     <img src="${
                       cardData.album.images[0].url
@@ -179,7 +179,37 @@ fetch("data.json")
         ],
       },
     });
-    chart.appendChild(myChart);
+
+    var popularityData = jsonData.map((cardData) => cardData.popularity);
+
+    var popularityChart = document
+      .getElementById("popularityChart")
+      .getContext("2d");
+    var myPopularityChart = new Chart(popularityChart, {
+      type: "bar",
+      data: {
+        labels: jsonData.map((cardData, i) => `${i + 1}. ${cardData.name}`),
+        datasets: [
+          {
+            label: "Popularité",
+            data: popularityData,
+            backgroundColor: "rgba(83, 86, 255, 0.8)",
+            borderColor: "rgba(83, 86, 255, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100,
+          },
+        },
+      },
+    });
+
+    console.log("Popularity Data:", popularityData);
   })
   .catch((error) => {
     console.error("Error fetching JSON data:", error);
